@@ -35,4 +35,18 @@ context '#y_axis' do
   end
 end
 
+context '#changes orientation' do
+  it 'moves left of it\'s current cardinal point' do
+    rover = Rover.new(0, 0, "N")
+    rover.move_left
+    expect(rover.position).to eq([0, 0, "W"])
+  end
+
+  it 'moves right of it\'s current cardinal point' do
+    rover = Rover.new(0, 0, "N")
+    rover.move_right
+    expect(rover.position).to eq([0, 0, "E"])
+  end
+end
+
 end
