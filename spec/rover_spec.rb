@@ -57,4 +57,12 @@ context '#changes orientation' do
   end
 end
 
+context '#input' do
+  it 'accepts a line of commands' do
+    rover = Rover.new(1, 2, "N")
+    rover.input('LMLMLMLMM')
+    expect(rover.position).to eq([1, 3, "N"])
+  end
+end
+
 end

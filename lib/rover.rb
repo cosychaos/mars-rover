@@ -66,19 +66,18 @@ class Rover
     end
   end
 
-  # if position[2] == "N"
-  #   if l
-  #     position.delete_at(2)
-  #     position.insert(2, "W")
-  #   elsif r
-  #     position.delete_at(2)
-  #     position.insert(2, "E")
-  #   else
-  #     "Rover cannot understand"
-  #   end
-  # end
-
-  # iterate over string
-  # have a case expression based on input string
+  def input(command_string)
+    command_string.each_char {|char|
+      if char == "l" || char == "L"
+        self.move_left
+      elsif char == "r" || char == "R"
+        self.move_right
+      elsif char == "m" || char == "M"
+        self.move
+      else
+        "Rover does not understand"
+      end
+    }
+  end
 
 end
