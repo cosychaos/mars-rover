@@ -6,4 +6,8 @@ class Commands
     # @commands = command_string
   end
 
+  def initialize (commands_class = Commands, str)
+    @commands = commands_class.new(str)
+  end
+
 end
