@@ -4,63 +4,81 @@
 
 This app was written in Ruby 2.3, and was test-driven using Rspec.
 
-In order to run the app, you can either use the command line by using `ruby command_center.rb`, or you can manually run the app using a console such as IRB or Pry.
+In order to run the app, please run`ruby lib/mission_control.rb` from the parent folder `mars-rover`.
 
-*Please do not include spaces in your commands.*
+*Please do not include spaces in your input.*
 
 **Testing**
 
 This app was test-driven using Rspec. You will need to use `bundle install` to install the Rspec gem. In order to run the tests, simply run `rspec` from the command line when in the parent folder `mars-rover`.
 
-At the moment, this app is tested on its logic, and in particular on the rover movements. The `MissionControl` class mostly contains input and display logic, and with more time, I would have test-driven these to keep the code clean.
+Due to a lack of time, only the `Rover` class and its methods have been test-driven. The `MissionControl` class was a draft until I realised I had ran out of time. I would like to re-write it by test-driving it.
 
 **Assumptions and design**
 
-This assessment was written in Ruby 2.3. It assumes that the rovers are instantiated one after another, rather than simultaneously. The programme runs with two classes, a `Rover` class and a `MissionControl` class. `MissionControl` receives the user input and instantiate a new rover for each set of commands passed by the user, and also initiate the rover's movement and return its position. `Rover` is in charge of moving itself according to the set of coordinates and commands fed to it by `MissionControl`.
+This assessment was written in Ruby 2.3. It currently only allows the user to instantiate the rovers one after another, rather than simultaneously. The programme runs with two classes, a `Rover` class and a `MissionControl` class. `MissionControl` receives the user input and instantiate a new rover and gives it a set of commands passed by the user. `Rover` is in charge of moving itself according to the set of coordinates and commands fed to it by `MissionControl`, and returning its position.
 
 **Challenges**
 
 Apart from battling a horrible onset of tonsilitis and a crashing dinosaur of a laptop, this problem was both challenging and rewarding.
 
-As this was my first ever tech test, I adopted the "make it work, make it quick, make it pretty" attitude, although it will become apparent that I haven't quite finished making it pretty.
+As this was my first ever tech test, I adopted the "make it work, make it quick, make it pretty" attitude, although it will become apparent that I haven't quite finished making it pretty and that it needs a few more edge cases.
 
-The main challenges I encountered were to first understand the question, as I am used to working with user stories rather than problems; keeping the design simple and logical; and refactoring.
+The main challenges I encountered were to first understand the question, as I am used to working with user stories rather than problems, keeping the design simple and logical, refactoring, and most importantly, time-management, as I struggled on aspects that kept me from implementing other features (notably edge cases).
+
+- I would have liked to refactor the input validation I originally had in place:
+
+```
+response_array.each do |line|
+  if line.start_with?(*"0".."9") && line.end_with?(*"0".."9")
+    @plateau << line
+  elsif line.start_with?(*"0".."9") && line.end_with?('N', 'E', 'S', 'W')
+    @coordinates << line
+  elsif line.start_with?('L', 'l', 'M', 'l', 'R', 'r') && line.end_with?('L', 'l', 'M', 'm', 'R', 'r')
+    commands = line.chars
+  end
+end
+```
+
+- With more time, I would have implemented edge cases, notably to make sure the rover does not go beyond the limits of the plateau, or to allow for the dimensions of the plateau to be changed after rovers have been created. At the moment, the dimensions of the plateau do not impact the programme.
+
+- I would have also liked to implement edge cases for user input (returning an error message if the input does not match the correct format or is missing information).
 
 **Refactoring**
 
 - The programme originally ran in one class as I set out to build a working MVP. I then extracted some of the logic to the `MissionControl` class so as to better follow the principles of encapsulation and single responsibility.
 
-- I started out with some very long conditionals, which I have then tried to make cleaner and more elegant:
+- I started out with some long conditionals, which I have then tried to make cleaner or more readable by replacing the array `position` by its three constituting elements `x`, `y` and `direction`:
 
-  ```
-    if @position[2] == "N"
-      @position.delete_at(2)
-      @position.insert(2, "W")
-    elsif @position[2] == "W"
-      @position.delete_at(2)
-      @position.insert(2, "S")
-    elsif @position[2] == "S"
-      @position.delete_at(2)
-      @position.insert(2, "E")
-    elsif @position[2] == "E"
-      @position.delete_at(2)
-      @position.insert(2, "N")
-    end
-  ```
+```
+if @position[2] == "N"
+  @position[1] += 1
+elsif @position[2] == "E"
+  @position[0] += 1
+elsif @position[2] == "S"
+  @position[1] -= 1
+elsif @position[2] == "W"
+  @position[0] -= 1
+end
+```
 
 Became
 
 ```
-Something here
+if @direction == "N"
+  @y += 1
+elsif @direction == "E"
+  @x += 1
+elsif @direction == "S"
+  @y -= 1
+elsif @direction == "W"
+  @x -= 1
+end
 ```
-
-- Although the `start_with?` and `end_with?` methods look clunky, notably because of the long-winded arguments, the gods of Stack Overflow have stated that they are more efficient than using regex matching. To make it cleaner, methods such as `include?` or `between` could be used with regular expressions instead.
 
 **Future Challenges**
 
 - In the future, this app could be developed and the control of the rovers could be improved, notably by allowing rover commands to be edited. I would also automate the rover movement sequence.
-
-- With more time, I would have implemented edge cases, notably to make sure the rover does not go beyond the limits of the plateau, or to allow for the dimensions of the plateau to be changed after rovers have been created. At the moment, the dimensions of the plateau do not impact the programme.
 
 - At the moment, the app doesn't allow for spaces between characters in the commands. This is something that I would look at.
 

@@ -1,66 +1,57 @@
 
 class Rover
 
-def initialize(position, commands)
-  @position = position
-  @commands = commands
-end
+attr_accessor :x, :y, :direction
 
-# TODO - refactor the logic
+  def initialize(x, y, direction)
+    @x = x
+    @y = y
+    @direction = direction
+  end
+
   def move_left
-    if @position[2] == "N"
-      @position.delete_at(2)
-      @position.insert(2, "W")
-    elsif @position[2] == "W"
-      @position.delete_at(2)
-      @position.insert(2, "S")
-    elsif @position[2] == "S"
-      @position.delete_at(2)
-      @position.insert(2, "E")
-    elsif @position[2] == "E"
-      @position.delete_at(2)
-      @position.insert(2, "N")
+    if @direction == "N"
+      @direction = "W"
+    elsif @direction == "W"
+      @direction = "S"
+    elsif @direction == "S"
+      @direction = "E"
+    elsif @direction == "E"
+      @direction = "N"
     end
   end
 
-# TODO - refactor the logic
   def move_right
-    if @position[2] == "N"
-      @position.delete_at(2)
-      @position.insert(2, "E")
-    elsif @position[2] == "E"
-      @position.delete_at(2)
-      @position.insert(2, "S")
-    elsif @position[2] == "S"
-      @position.delete_at(2)
-      @position.insert(2, "W")
-    elsif @position[2] == "W"
-      @position.delete_at(2)
-      @position.insert(2, "N")
+    if @direction == "N"
+      @direction = "E"
+    elsif @direction == "E"
+      @direction = "S"
+    elsif @direction == "S"
+      @direction = "W"
+    elsif @direction == "W"
+      @direction = "N"
     end
   end
 
-# TODO - refactor the logic
   def move
-    if @position[2] == "N"
-      @position[1] += 1
-    elsif @position[2] == "E"
-      @position[0] += 1
-    elsif @position[2] == "S"
-      @position[1] -= 1
-    elsif @position[2] == "W"
-      @position[0] -= 1
+    if @direction == "N"
+      @y += 1
+    elsif @direction == "E"
+      @x += 1
+    elsif @direction == "S"
+      @y -= 1
+    elsif @direction == "W"
+      @x -= 1
     end
   end
 
-# TODO - Refactor the logic
-  def move_rover
-    @commands.each do |char|
-      if char == "l" || char == "L"
+  def move_rover(commands)
+    commands.each do |char|
+      if char == "L"
         self.move_left
-      elsif char == "r" || char == "R"
+      elsif char == "R"
         self.move_right
-      elsif char == "m" || char == "M"
+      elsif char == "M"
         self.move
       else
         "Rover does not understand"
@@ -69,8 +60,7 @@ end
   end
 
   def final_position
-    array = @position.flatten.join(" ")
-    print "Rover is at position: " + array + "  \n"
+    "Rover is at position: #{@x} #{@y} #{@direction}"
   end
 
 end
