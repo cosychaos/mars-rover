@@ -76,6 +76,12 @@ elsif @direction == "W"
 end
 ```
 
+- Although it is possible to reactor the `move_rover` method to :
+
+`char == "L" ? self.move_left : char == "R" ? self.move_right : char == "M" ? self.move : "Rover does not understand"`
+
+the code would be very difficult to read. A more OO solution may be attempted once the programme is complete.
+
 **Future Challenges**
 
 - In the future, this app could be developed and the control of the rovers could be improved, notably by allowing rover commands to be edited. I would also automate the rover movement sequence.

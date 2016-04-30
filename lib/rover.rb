@@ -3,46 +3,39 @@ class Rover
 
 attr_accessor :x, :y, :direction
 
+DIRECTION_LEFT = {
+  "N" => "W",
+  "W" => "S",
+  "S" => "E",
+  "E" => "N"
+}
+
+DIRECTION_RIGHT = {
+  "N" => "E",
+  "E" => "S",
+  "S" => "W",
+  "W" => "N"
+}
+
   def initialize(x, y, direction)
     @x = x
     @y = y
     @direction = direction
   end
 
-  def move_left
-    if @direction == "N"
-      @direction = "W"
-    elsif @direction == "W"
-      @direction = "S"
-    elsif @direction == "S"
-      @direction = "E"
-    elsif @direction == "E"
-      @direction = "N"
-    end
-  end
+def move_left
+  @direction = DIRECTION_LEFT[direction]
+end
 
-  def move_right
-    if @direction == "N"
-      @direction = "E"
-    elsif @direction == "E"
-      @direction = "S"
-    elsif @direction == "S"
-      @direction = "W"
-    elsif @direction == "W"
-      @direction = "N"
-    end
-  end
+def move_right
+  @direction = DIRECTION_RIGHT[direction]
+end
 
   def move
-    if @direction == "N"
-      @y += 1
-    elsif @direction == "E"
-      @x += 1
-    elsif @direction == "S"
-      @y -= 1
-    elsif @direction == "W"
-      @x -= 1
-    end
+    return @y += 1 if @direction == "N"
+    return @x += 1 if @direction == "E"
+    return @y -= 1 if @direction == "S"
+    return @x -= 1 if @direction == "W"
   end
 
   def move_rover(commands)
