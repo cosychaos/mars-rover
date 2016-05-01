@@ -1,4 +1,5 @@
 require "rover"
+require "grid"
 
 describe Rover do
 
@@ -38,25 +39,25 @@ describe Rover do
   context '#changes orientation when moving left' do
     it 'moves from North to West' do
       rover = Rover.new(0, 0, "N")
-      rover.move_left
+      rover.turn_left
       expect(rover.direction).to eq("W")
     end
 
     it 'moves from East to North' do
       rover = Rover.new(0,0, "E")
-      rover.move_left
+      rover.turn_left
       expect(rover.direction).to eq("N")
     end
 
     it 'moves from South to East' do
       rover = Rover.new(0,0, "S")
-      rover.move_left
+      rover.turn_left
       expect(rover.direction).to eq("E")
     end
 
     it 'moves from West to South' do
       rover = Rover.new(0,0, "W")
-      rover.move_left
+      rover.turn_left
       expect(rover.direction).to eq("S")
     end
   end
@@ -64,25 +65,25 @@ describe Rover do
   context '#changes orientation when moving right' do
     it 'moves from North to East' do
       rover = Rover.new(0, 0, "N")
-      rover.move_right
+      rover.turn_right
       expect(rover.direction).to eq("E")
     end
 
     it 'moves from East to South' do
       rover = Rover.new(0, 0, "E")
-      rover.move_right
+      rover.turn_right
       expect(rover.direction).to eq("S")
     end
 
     it 'moves from South to West' do
       rover = Rover.new(0, 0, "S")
-      rover.move_right
+      rover.turn_right
       expect(rover.direction).to eq("W")
     end
 
     it 'moves from West to North' do
       rover = Rover.new(0, 0, "W")
-      rover.move_right
+      rover.turn_right
       expect(rover.direction).to eq("N")
     end
   end
@@ -102,6 +103,16 @@ describe Rover do
       expect(rover.x).to eq(5)
       expect(rover.y).to eq(1)
       expect(rover.direction).to eq("E")
+    end
+  end
+
+  context '#scents' do
+    let(:grid) {Grid.new(5,5)}
+
+    xit 'detects a scent' do
+      rover = Rover.new(1,1,"N")
+      grid.stub(:is_scented?).and_return(true)
+      expect(rover.detect_scent(1,1)).to be true
     end
   end
 

@@ -18,6 +18,8 @@ Due to a lack of time, only the `Rover` class and its methods have been test-dri
 
 This assessment was written in Ruby 2.3. It currently only allows the user to instantiate the rovers one after another, rather than simultaneously. The programme runs with two classes, a `Rover` class and a `MissionControl` class. `MissionControl` receives the user input and instantiate a new rover and gives it a set of commands passed by the user. `Rover` is in charge of moving itself according to the set of coordinates and commands fed to it by `MissionControl`, and returning its position.
 
+Explain why rover is not initialized with commands (so that you can change them independently)
+
 **Challenges**
 
 Apart from battling a horrible onset of tonsilitis and a crashing dinosaur of a laptop, this problem was both challenging and rewarding.
