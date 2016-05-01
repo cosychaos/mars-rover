@@ -2,7 +2,7 @@ require "rover"
 
 describe Rover do
 
-  it 'initialises a rover with a 0, 0, N position' do
+  it 'is initialised with a 0, 0, N position' do
     rover = Rover.new(0, 0, "N")
     expect(rover.x).to eq(0)
     expect(rover.y).to eq(0)
@@ -87,11 +87,22 @@ describe Rover do
     end
   end
 
-  it 'follows commands' do
-    rover = Rover.new(1, 2, "N")
-    rover.move_rover(["L", "M", "L", "M", "L", "M", "L", "M", "M"])
-    expect(rover.x).to eq(1)
-    expect(rover.y).to eq(3)
-    expect(rover.direction).to eq("N")
+  context '#follows commands' do
+    it 'is initialised at position 12N with commands LMLMLMLMM' do
+      rover = Rover.new(1, 2, "N")
+      rover.move_rover(["L", "M", "L", "M", "L", "M", "L", "M", "M"])
+      expect(rover.x).to eq(1)
+      expect(rover.y).to eq(3)
+      expect(rover.direction).to eq("N")
+    end
+
+    it 'is initialised at position 33E with commands MMRMMRMRRM' do
+      rover = Rover.new(3, 3, "E")
+      rover.move_rover(["M", "M", "R", "M", "M", "R", "M", "R", "R", "M"])
+      expect(rover.x).to eq(5)
+      expect(rover.y).to eq(1)
+      expect(rover.direction).to eq("E")
+    end
   end
+
 end
