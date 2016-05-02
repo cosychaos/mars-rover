@@ -2,66 +2,48 @@ require_relative "grid"
 
 class Rover
 
-attr_accessor :x, :y, :direction
+attr_accessor :x, :y, :orientation
 
-DIRECTION_LEFT = {
+L = {
   "N" => "W",
   "W" => "S",
   "S" => "E",
   "E" => "N"
 }
 
-DIRECTION_RIGHT = {
+R = {
   "N" => "E",
   "E" => "S",
   "S" => "W",
   "W" => "N"
 }
 
-  def initialize(x, y, direction)
+  def initialize(x, y, orientation)
     @x = x
     @y = y
-    @direction = direction
+    @orientation = orientation
   end
 
-  def turn_left
-    @direction = DIRECTION_LEFT[direction]
+  def turn(direction)
+    @orientation = Rover.const_get(direction)[orientation]
   end
 
-  def turn_right
-    @direction = DIRECTION_RIGHT[direction]
+  def move_forward(grid)
+    return if ignore_forward?(grid)
+    @y += 1 if @orientation == "N"
+    @x += 1 if @orientation == "E"
+    @y -= 1 if @orientation == "S"
+    @x -= 1 if @orientation == "W"
   end
 
-  def move
-    return @y += 1 if @direction == "N"
-    return @x += 1 if @direction == "E"
-    return @y -= 1 if @direction == "S"
-    return @x -= 1 if @direction == "W"
-  end
-
-  def move_rover(commands)
-    commands.each do |char|
-      if char == "L"
-        self.turn_left
-      elsif char == "R"
-        self.turn_right
-      elsif char == "M"
-        self.move
-      else
-        "Rover does not understand"
-      end
+  def move_rover(commands, grid)
+    commands.each do |command|
+      command == "F" ? self.move_forward(grid) : self.turn(command)
     end
   end
 
-  # def detect_scent(x,y)
-  #   # grid = Grid.new(x,y)
-  #   if grid.is_scented?(x,y) == true
-  #     true
-  #   end
-  # end
-
-  def final_position
-    "Rover is at position: #{@x} #{@y} #{@direction}"
+  def ignore_forward?(grid)
+    grid.is_scented?(self.x,self.y, self.orientation)
   end
 
 end
