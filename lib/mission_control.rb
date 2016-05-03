@@ -1,12 +1,12 @@
-# ++ # initialises rovers depending on how many pieces of robot_data there are
-# # initialises a grid depending on the grid_data available
+# ++ # initialises robots depending on how many pieces of robot_data there are
+# ++ # initialises a grid depending on the grid_data available
 # # check if robot would go beyond boundaries before every command if !is_scented
 # # if robot is_lost it sets_scent to last position it was at
-# # writes to new file  the new position of the rovers
+# # writes to new file  the new position of the robots
 #
 
 require_relative "input"
-require_relative "rover"
+require_relative "robot"
 require_relative "grid"
 
 class MissionControl
@@ -26,7 +26,7 @@ end
 def create_robot
   self.fetch_datasets
   @deployed_robots = @robot_datasets.each do |dataset|
-       Rover.send(:new, "rover")
+       Robot.send(:new, "robot")
   end
 end
 
@@ -43,8 +43,8 @@ end
 # input.parse_file
 # a=input.extract_robots_data
 #
-# create_rovers(a) // Rover new (1,1,e,rrrrr), ``roverNew
+# create_robots(a) // Rover new (1,1,e,rrrrr), ``robotNew
 # create_grid
-# rover.move_rover
-# roover.moverover(input.getrbtdata.commands,grid)
+# robot.move_robot
+# roover.moverobot(input.getrbtdata.commands,grid)
 # end

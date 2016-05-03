@@ -1,6 +1,6 @@
 require_relative "grid"
 
-class Rover
+class Robot
 
 attr_accessor :x, :y, :orientation, :commands
 
@@ -26,7 +26,7 @@ R = {
   end
 
   def turn(direction)
-    @orientation = Rover.const_get(direction)[orientation]
+    @orientation = Robot.const_get(direction)[orientation]
   end
 
   def move_forward(grid)
@@ -37,7 +37,7 @@ R = {
     @x -= 1 if @orientation == "W"
   end
 
-  def move_rover(command, grid)
+  def move_robot(command, grid)
     command.each do |command|
       command == "F" ? self.move_forward(grid) : self.turn(command)
     end
