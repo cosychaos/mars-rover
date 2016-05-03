@@ -9,7 +9,7 @@ require_relative "input"
 
 class MissionControl
 
-attr_accessor :input, :robot_pairs
+attr_accessor :input, :robot_pairs, :grid_data
 
 def initialize(input = Input.new)
   @input = input
@@ -17,7 +17,7 @@ end
 
 def fetch_input
   @robot_pairs = @input.robot_pairs
-  @grid_data = @input.grid_data
+  @grid_data = @input.formatted_grid_data
 end
 
 # def create_rover(robot_pairs)

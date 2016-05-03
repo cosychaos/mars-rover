@@ -2,16 +2,20 @@ require "mission_control"
 
 describe MissionControl do
 
-  it 'initialises with an input' do
-    mission_control = MissionControl.new
-    mission_control.input.format_robot_data
-    expect(mission_control.robot_pairs).to eq([[1,1,"E","RFRFRFRF"],[3, 2, "N", "FRRFLLFFRRFLL"]])
-    expect(mission_control.grid_data).to eq(input.grid_data)
+  before(:each) do
+    @mission_control = MissionControl.new
   end
 
-  xit 'creates an instance of the class rover for every set of data available' do
-    mission_control = MissionControl.new
-    mission_control.create_rover([[1,1,"E","RFRFRFRF"],[3, 2, "N", "FRRFLLFFRRFLL"]])
+  it 'initialises with an input' do
+    @mission_control.input.format_robot_data
+    @mission_control.fetch_input
+    expect(@mission_control.robot_pairs).to eq([[1, 1, "E", "RFRFRFRF"], [3, 2, "N", "FRRFLLFFRRFLL"], [0, 3, "W", "LLFFFLFLFL"]])
+  end
+
+  it 'creates a grid' do
+    @mission_control.input.format_grid_data
+    @mission_control.fetch_input
+    expect(@mission_control.grid_data).to eq([5,3])
   end
 
 end
