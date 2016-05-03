@@ -3,7 +3,7 @@ require "grid"
 
 describe Rover do
 
-  let(:grid) {Grid.new(5,5)}
+  let(:grid) {Grid.new([5,3])}
 
   it 'is initialised with a 0, 0, N position and a command string' do
     rover = Rover.new([0, 0, "N", "RFRFRFRF"])

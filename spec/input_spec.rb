@@ -14,7 +14,7 @@ describe Input do
 
   it 'extracts, deletes and formats the grid dimensions from the array' do
     @input.format_grid_data
-    expect(@input.formatted_grid_data).to eq([5,3])
+    expect(@input.grid_dataset).to eq([5,3])
     expect(@input.parsed_input).to eq(["1 1 E", "RFRFRFRF", "", "3 2 N", "FRRFLLFFRRFLL"])
   end
 
@@ -25,7 +25,7 @@ describe Input do
 
   it 'format the robot data for consumption by a new robot' do
     @input.format_robot_data
-    expect(@input.robot_pairs).to eq([[1,1,"E","RFRFRFRF"],[3, 2, "N","FRRFLLFFRRFLL"]])
+    expect(@input.robot_datasets).to eq([[1,1,"E","RFRFRFRF"],[3, 2, "N","FRRFLLFFRRFLL"]])
   end
 
 end

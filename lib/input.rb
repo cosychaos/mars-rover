@@ -1,6 +1,6 @@
 class Input
 
-  attr_accessor  :robot_data, :robots_data, :robot_pairs, :formatted_grid_data, :grid_data, :parsed_input, :extract_grid
+  attr_accessor  :robot_data, :robots_data, :robot_datasets, :grid_dataset, :grid_data, :parsed_input, :extract_grid
 
   def read_file
     @contents = File.open('./input.txt', 'rb') { |file| file.read }
@@ -24,7 +24,7 @@ class Input
     self.extract_grid_data
     @grid_data.each do |coordinate|
       split_coordinate = coordinate.split(" ")
-       @formatted_grid_data = Array.new << split_coordinate[0].to_i << split_coordinate[1].to_i
+       @grid_dataset = Array.new << split_coordinate[0].to_i << split_coordinate[1].to_i
     end
   end
 
@@ -35,13 +35,18 @@ class Input
 
   def format_robot_data
     robot_data = []
-    @robot_pairs = []
+    @robot_datasets = []
     self.extract_robots_data
-    @robots_data.each do |pair|
-      split_pair = pair[0].split(" ")
-      robot_data << split_pair[0].to_i << split_pair[1].to_i << split_pair[2] << pair[1]
-      @robot_pairs = robot_data.each_slice(4).to_a
+    @robots_data.each do |dataset|
+      split_dataset = dataset[0].split(" ")
+      robot_data << split_dataset[0].to_i << split_dataset[1].to_i << split_dataset[2] << dataset[1]
+      @robot_datasets = robot_data.each_slice(4).to_a
     end
+  end
+
+  def fetch_all_data
+    self.format_grid_data
+    self.format_robot_data
   end
 
 end

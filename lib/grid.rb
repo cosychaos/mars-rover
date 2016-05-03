@@ -2,9 +2,9 @@ class Grid
 
   attr_accessor :x, :y, :scent
 
-  def initialize(x,y)
-    @x = x
-    @y = y
+  def initialize(array)
+    @x = array[0]
+    @y = array[1]
     @scent = []
   end
 

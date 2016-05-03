@@ -1,4 +1,4 @@
-# # initialises rovers depending on how many pieces of robot_data there are
+# ++ # initialises rovers depending on how many pieces of robot_data there are
 # # initialises a grid depending on the grid_data available
 # # check if robot would go beyond boundaries before every command if !is_scented
 # # if robot is_lost it sets_scent to last position it was at
@@ -6,25 +6,35 @@
 #
 
 require_relative "input"
+require_relative "rover"
+require_relative "grid"
 
 class MissionControl
 
-attr_accessor :input, :robot_pairs, :grid_data
+attr_accessor :input, :robot_datasets, :grid_dataset, :grid, :deployed_robots
 
 def initialize(input = Input.new)
   @input = input
 end
 
-def fetch_input
-  @robot_pairs = @input.robot_pairs
-  @grid_data = @input.formatted_grid_data
+def fetch_datasets
+  @input.fetch_all_data
+  @robot_datasets = @input.robot_datasets
+  @grid_dataset = @input.grid_dataset
 end
 
-# def create_rover(robot_pairs)
-#   robot_pairs.each do |pair|
-#     Rover.new(pair)
-#   end
-# end
+def create_robot
+  self.fetch_datasets
+  @deployed_robots = @robot_datasets.each do |dataset|
+       Rover.send(:new, "rover")
+  end
+end
+
+def create_grid
+  self.fetch_datasets
+  grid_coord = @grid_dataset
+  @grid = Grid.new(grid_coord)
+end
 
 end
 #
