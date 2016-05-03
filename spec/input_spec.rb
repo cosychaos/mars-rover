@@ -4,38 +4,28 @@ describe Input do
 
   before(:each) do
     @input = Input.new
-    @input.read_file
+    expect(File).to receive(:open).with('./input.txt','rb').and_return("5 3\n1 1 E\nRFRFRFRF\n\n3 2 N\nFRRFLLFFRRFLL")
   end
 
-  it 'reads an input file' do
-    expect(@input.read_file).to eq("5 3\n1 1 E\nRFRFRFRF\n\n3 2 N\nFRRFLLFFRRFLL\n\n0 3 W\nLLFFFLFLFL\n")
+  it 'splits the input by line into an array of strings' do
+    @input.parse_file
+    expect(@input.parsed_input).to eq(["5 3", "1 1 E", "RFRFRFRF", "", "3 2 N", "FRRFLLFFRRFLL"])
   end
 
-  it 'splits the input into array of strings at return line' do
-    expect(@input.split_input).to eq(["5 3", "1 1 E", "RFRFRFRF", "", "3 2 N", "FRRFLLFFRRFLL", "", "0 3 W", "LLFFFLFLFL"])
+  it 'extracts, deletes and formats the grid dimensions from the array' do
+    @input.format_grid_data
+    expect(@input.formatted_grid_data).to eq([5,3])
+    expect(@input.parsed_input).to eq(["1 1 E", "RFRFRFRF", "", "3 2 N", "FRRFLLFFRRFLL"])
   end
 
-context 'extracts data from the input' do
-  before(:each) do
-    @input = Input.new
-    @input.read_file
-    @input.split_input
+  it 'extracts the coordinates and the commands from the array' do
+    @input.extract_robots_data
+    expect(@input.robots_data).to eq([["1 1 E", "RFRFRFRF"], ["3 2 N", "FRRFLLFFRRFLL"]])
   end
 
-  it 'extracts the grid dimensions' do
-    @input.extract_grid
-    expect(@input.grid).to eq(["5 3"])
+  it 'format the robot data for consumption by a new robot' do
+    @input.format_robot_data
+    expect(@input.robot_pairs).to eq([[1,1,"E","RFRFRFRF"],[3, 2, "N","FRRFLLFFRRFLL"]])
   end
-
-  it 'extracts the coordinates' do
-    @input.extract_coordinates
-    expect(@input.coordinates).to eq(["1 1 E", "3 2 N", "0 3 W"])
-  end
-
-  it 'extracts the input' do
-    @input.extract_commands
-    expect(@input.commands).to eq(["RFRFRFRF", "FRRFLLFFRRFLL", "LLFFFLFLFL"])
-  end
-end
 
 end

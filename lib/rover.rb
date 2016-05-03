@@ -2,7 +2,7 @@ require_relative "grid"
 
 class Rover
 
-attr_accessor :x, :y, :orientation
+attr_accessor :x, :y, :orientation, :commands
 
 L = {
   "N" => "W",
@@ -18,10 +18,11 @@ R = {
   "W" => "N"
 }
 
-  def initialize(x, y, orientation)
-    @x = x
-    @y = y
-    @orientation = orientation
+  def initialize(array)
+    @x = array[0]
+    @y = array[1]
+    @orientation = array[2]
+    @commands = array[3]
   end
 
   def turn(direction)
@@ -36,8 +37,8 @@ R = {
     @x -= 1 if @orientation == "W"
   end
 
-  def move_rover(commands, grid)
-    commands.each do |command|
+  def move_rover(command, grid)
+    command.each do |command|
       command == "F" ? self.move_forward(grid) : self.turn(command)
     end
   end
