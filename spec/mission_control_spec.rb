@@ -17,7 +17,7 @@ describe MissionControl do
     end
   end
 
-  context '#instantiate elements' do
+  context '#instantiates elements' do
     it 'instantiate a grid with the grid dataset available' do
       @mission_control.create_grid
       expect(@mission_control.grid.x).to eq(5)
@@ -26,12 +26,16 @@ describe MissionControl do
 
     it 'instantiate a robot for each robot dataset available' do
       @mission_control.create_robot
-      expect(@mission_control.deployed_robots).not_to be(nil)
+      expect(@mission_control.deployed_robots.count).to be(3)
     end
   end
 
-  context '#robots movements' do
-
+  xcontext '#moves robots' do
+    it 'moves a series of robots' do
+      @mission_control.create_robot
+      @mission_control.move_robots
+      expect(@mission_control.deployed_robots[0].final_position).to eq([1,1,'E'])
+    end
   end
 
 end

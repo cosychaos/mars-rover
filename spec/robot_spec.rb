@@ -100,7 +100,7 @@ describe Robot do
       expect(robot.orientation).to eq("E")
     end
 
-    it 'is initialised at position 33E with commands MMRMMRMRRM' do
+    it 'is initialised at position 32N with commands FRRFLLFFRRFLL' do
       robot = Robot.new([3, 2, "N", "FRRFLLFFRRFLL"],grid)
       robot.move_robot#(["F","R","R","F","L","L","F","F","R","R","F","L","L"], grid)
       expect(robot.x).to eq(3)
@@ -109,19 +109,19 @@ describe Robot do
     end
   end
 
-  context '#scents' do
+  xcontext '#scents' do
     before(:each) do
       @robot = Robot.new([1,1,"N", "RFRFRFRF"],grid)
     end
 
-    xit 'returns true if the grid is scented where the robot is' do
+    it 'returns true if the grid is scented where the robot is' do
       expect(grid).to receive(:is_scented?).with(1,1,"N").and_return(true)
       expect(@robot.ignore_forward?).to be true
     end
 
     it 'ignores the Forward command if ignore_forward is true' do
-      # expect(grid).to receive(:is_scented?).with(1,1,"N").and_return(true)
-      # expect(grid).to receive(:is_scented?).with(1,1,"E").and_return(false)
+      expect(grid).to receive(:is_scented?).with(1,1,"N").and_return(true)
+      expect(grid).to receive(:is_scented?).with(1,1,"E").and_return(false)
       @robot.move_robot
       expect(@robot.x).to eq(1)
       expect(@robot.y).to eq(1)
@@ -133,29 +133,59 @@ describe Robot do
     it 'returns "LOST" when gone off-grid' do
       @robot = Robot.new([0,3,"W", "LLFFFLFLFL"],grid)
       @robot.move_robot
-      expect(@robot.is_lost?).to be true
+      @robot.is_lost?
+      expect(@robot.status).to eq("LOST")
     end
 
-    it 'does not return "LOST" if still on the grid' do
+    it 'returns "SAFE" if still on the grid' do
       @robot = Robot.new([1,1,"E", "RFRFRFRF"],grid)
       @robot.move_robot
-      expect(@robot.is_lost?).to be false
+      @robot.is_lost?
+      expect(@robot.status).to eq("SAFE")
     end
 
     it 'returns the last position it was at before getting lost' do
-      @robot = Robot.new([0,3,"W", "LLFFFLFLFL"],grid)
+      @robot = Robot.new([3,2,"N", "FRRFLLFFRRFLL"],grid)
       @robot.move_robot
-      @robot.gets_lost
-      expect(@robot.last_seen).to eq([3,3,"E"])
+      @robot.record_position
+      # expect(@robot.last_seen).to eq([3,3,"N"])
     end
 
     it 'returns the final position when not getting lost' do
-    @robot = Robot.new([1,1,"E", "RFRFRFRF"],grid)
-    @robot.move_robot
-    expect(@robot.gets_lost).to eq("Robot is not lost")
-    expect(@robot.x).to eq(1)
-    expect(@robot.y).to eq(1)
-    expect(@robot.orientation).to eq("E")
+      @robot = Robot.new([1,1,"E", "RFRFRFRF"],grid)
+      @robot.move_robot
+      @robot.record_position
+      expect(@robot.status).to eq("SAFE")
+      expect(@robot.x).to eq(1)
+      expect(@robot.y).to eq(1)
+      expect(@robot.orientation).to eq("E")
+    end
+  end
+
+  context '#fetch_position' do
+    it 'stores the final position of a non-lost rover in an array' do
+      @robot = Robot.new([1,1,"E", "RFRFRFRF"],grid)
+      @robot.move_robot
+      @robot.record_position
+      @robot.fetch_final_position
+      expect(@robot.final_position).to eq([1,1,"E"])
+    end
+
+    it 'stores the "LOST" status of a lost robot' do
+      @robot = Robot.new([0,3,"W", "LLFFFLFLFL"],grid)
+      @robot.move_robot
+      @robot.record_position
+      # @robot.fetch_final_position
+      # expect(@robot.final_position).to eq([3,3,"E"])
+    end
+  end
+
+  context '#move_robot' do
+    it 'moves a robot, checks if robot is lost, and return last position' do
+      @robot = Robot.new([1,1,"E", "RFRFRFRF"],grid)
+      @robot.move_robot
+      expect(@robot.status).to eq("SAFE")
+      # expect(@robot.final_position).to eq([1,1,"E"])
     end
   end
 

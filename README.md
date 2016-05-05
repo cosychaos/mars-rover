@@ -4,136 +4,106 @@
 
 This app was written in Ruby 2.3, and was test-driven using Rspec.
 
-In order to run the app, please run`ruby lib/mission_control.rb` from the parent folder `mars-rover`.
-
-*Please do not include spaces in your input.*
+The programme is not currently complete, and as such can only be run manually or via a REPL. Although robots can be moved, lost robots do not yet records their last position on the grid before falling off, and scents have only been tested and written, but not implemented.
 
 **Testing**
 
 This app was test-driven using Rspec. You will need to use `bundle install` to install the Rspec gem. In order to run the tests, simply run `rspec` from the command line when in the parent folder `mars-rover`.
 
-Due to a lack of time, only the `Rover` class and its methods have been test-driven. The `MissionControl` class was a draft until I realised I had ran out of time. I would like to re-write it by test-driving it.
+Some tests have been purposedly escaped as the programme is incomplete.
 
 **Assumptions and design**
 
-This assessment was written in Ruby 2.3. It currently only allows the user to instantiate the rovers one after another, rather than simultaneously. The programme runs with two classes, a `Rover` class and a `MissionControl` class. `MissionControl` receives the user input and instantiate a new rover and gives it a set of commands passed by the user. `Rover` is in charge of moving itself according to the set of coordinates and commands fed to it by `MissionControl`, and returning its position.
-
-Explain why rover is not initialized with commands (so that you can change them independently)
+This assessment was written in Ruby 2.3. It currently only allows the user to instantiate the rovers one after another, rather than simultaneously. The programme runs with four classes:
+- The `Input` class takes care of reading, parsing, and formatting an input file.
+- The `Mission Control` class operates as a controller to retrieve the grid and robots data, and instantiate instances of both.
+- The `Robot` class is tasked with moving the robots, checking whether the robot is lost, and returning the last position of a robot on the grid.
+- The `Grid` class is currently used for the robots to calculate their trajectories and check if they are lost. In the future, a grid will be scented and stop robots from going off grid.
 
 **Challenges**
 
-Apart from battling a horrible onset of tonsilitis and a crashing dinosaur of a laptop, this problem was both challenging and rewarding.
+I had originally started this challenge in JavaScript, but eventually decided to continue in Ruby as I am currently more comfortable with the language.
 
-As this was my first ever tech test, I adopted the "make it work, make it quick, make it pretty" attitude, although it will become apparent that I haven't quite finished making it pretty and that it needs a few more edge cases.
+My laptop was dying a slow and very painful death, so I eventually decided to buy a new one and spent a long time setting it up, but thankfully did not run into too many installation problems.
 
-The main challenges I encountered were to first understand the question, as I am used to working with user stories rather than problems, keeping the design simple and logical, refactoring, and most importantly, time-management, as I struggled on aspects that kept me from implementing other features (notably edge cases).
+Although writing this programme has so far been an enjoyable challenge, I currently stand defeated by the lost robot who just refuse to return the last position they were at before falling off the grid. Pesky robots!
 
-- I would have liked to refactor the input validation I originally had in place:
+Pry has become my best friend, and so have print statements, both of which have been my friends for the long and numerous hours I have spent debugging this programme. I have no doubt we shall very soon be re-united.
 
-```
-response_array.each do |line|
-  if line.start_with?(*"0".."9") && line.end_with?(*"0".."9")
-    @plateau << line
-  elsif line.start_with?(*"0".."9") && line.end_with?('N', 'E', 'S', 'W')
-    @coordinates << line
-  elsif line.start_with?('L', 'l', 'M', 'l', 'R', 'r') && line.end_with?('L', 'l', 'M', 'm', 'R', 'r')
-    commands = line.chars
-  end
-end
-```
+The programme is currently missing the (arguably) two most important features: lost robots returning their last grid position and ignoring commands if the grid is scented. There's evidence of my attempt, but it's not quite all tied together just yet, and I think I have over-engineered it and got myself a little confused.
 
-- With more time, I would have implemented edge cases, notably to make sure the rover does not go beyond the limits of the plateau, or to allow for the dimensions of the plateau to be changed after rovers have been created. At the moment, the dimensions of the plateau do not impact the programme.
+**Refactoring and improving**
 
-- I would have also liked to implement edge cases for user input (returning an error message if the input does not match the correct format or is missing information).
+I forgot to check for maximum values and maximum string length. This will be added ASAP to the `Input` class, with the relevant tests.
 
-**Refactoring**
+I have a slight aversion for mocks and stubs in RSpec, so I'd like to grok those and refactor my tests to make them neater and clearer.
 
-- The programme originally ran in one class as I set out to build a working MVP. I then extracted some of the logic to the `MissionControl` class so as to better follow the principles of encapsulation and single responsibility.
-
-- I started out with some long conditionals, which I have then tried to make cleaner or more readable by replacing the array `position` by its three constituting elements `x`, `y` and `direction`:
-
-```
-if @position[2] == "N"
-  @position[1] += 1
-elsif @position[2] == "E"
-  @position[0] += 1
-elsif @position[2] == "S"
-  @position[1] -= 1
-elsif @position[2] == "W"
-  @position[0] -= 1
-end
-```
-
-Became
-
-```
-if @direction == "N"
-  @y += 1
-elsif @direction == "E"
-  @x += 1
-elsif @direction == "S"
-  @y -= 1
-elsif @direction == "W"
-  @x -= 1
-end
-```
-
-- Although it is possible to refactor the `move_rover` method to :
-
-`char == "L" ? self.move_left : char == "R" ? self.move_right : char == "M" ? self.move : "Rover does not understand"`
-
-the code would be very difficult to read. A more OO solution may be attempted once the programme is complete.
+Some methods, such as `mission_control.create_robot`, `robot.fetch_last_seen` and `fetch_final_position` are not particularly clear, nor short enough. I'd like to spend some time improving these to make the codebase more elegant.
 
 **Future Challenges**
 
-- In the future, this app could be developed and the control of the rovers could be improved, notably by allowing rover commands to be edited. I would also automate the rover movement sequence.
-
-- At the moment, the app doesn't allow for spaces between characters in the commands. This is something that I would look at.
+- In the future, this app could be developed and the control of the rovers could be improved, notably by allowing rover commands to be edited or added to the existing sets of commands.
 
 **TL;DR**
 - `ruby mission_control.rb` to run the programme
 - `rspec` to test the programme
 - The programme has some classes
 - I struggled but I had fun
+- I need to finish it
 - I could spend the rest of my life refactoring
 - I could add features to the programme
 
 **Thanks for reading, using and testing!**
 
-## Assessment:
-A squad of robotic rovers are to be landed by NASA on a plateau on Mars. This plateau, which is curiously rectangular, must be navigated by the rovers so that their on-board cameras can get a complete view of the surrounding terrain to send back to Earth.
+## Martian Robots:
+The surface of Mars can be modelled by a rectangular grid around which robots are able to move according to instructions provided from Earth. You are to write a program that determines each sequence of robot positions and reports the final position of the robot. A robot position consists of a grid coordinate (a pair of integers: x-coordinate followed by y-coordinate) and an orientation (N, S, E, W for north, south, east, and west).
 
-A rover’s position and location is represented by a combination of x and y co-ordinates and a letter representing one of the four cardinal compass points. The plateau is divided up into a grid to simplify navigation. An example position might be 0, 0, N, which means the rover is in the bottom left corner and facing North.
+A robot instruction is a string of the letters “L”, “R”, and “F” which represent, respectively, the instructions:
 
-In order to control a rover, NASA sends a simple string of letters. The possible letters are ‘L’, ‘R’ and ‘M’. ‘L’ and ‘R’ makes the rover spin 90 degrees left or right respectively, without moving from its current spot. ‘M’ means move forward one grid point, and maintain the same heading.
+● Left : the robot turns left 90 degrees and remains on the current grid point.
+● Right : the robot turns right 90 degrees and remains on the current grid point.
+● Forward : the robot moves forward one grid point in the direction of the current orientation and maintains the same orientation.
 
-Assume that the square directly North from (x, y) is (x, y+1).
+The direction North corresponds to the direction from grid point (x, y) to grid point (x, y+1). There is also a possibility that additional command types may be required in the future and provision should be made for this.
+
+Since the grid is rectangular and bounded (…yes Mars is a strange planet), a robot that moves “off” an edge of the grid is lost forever. However, lost robots leave a robot “scent” that prohibits future robots from dropping off the world at the same grid point. The scent is left at the last grid position the robot occupied before disappearing over the edge. An instruction to move “off” the world from a grid point from which a robot has been previously lost is simply ignored by the current robot.
 
 **Input:**  
-The first line of input is the upper-right coordinates of the plateau, the lower-left coordinates are assumed to be 0,0.
+The first line of input is the upper-right coordinates of the rectangular world, the lower-left coordinates are assumed to be 0, 0.
 
-The rest of the input is information pertaining to the rovers that have been deployed. Each rover has two lines of input. The first line gives the rover’s position, and the second line is a series of instructions telling the rover how to explore the plateau.
+The remaining input consists of a sequence of robot positions and instructions (two lines per robot). A position consists of two integers specifying the initial coordinates of the robot and an orientation (N, S, E, W), all separated by whitespace on one line. A robot instruction is a string of the letters “L”, “R”, and “F” on one line.
 
-The position is made up of two integers and a letter separated by spaces, corresponding to the x and y co-ordinates and the rover’s orientation.
+Each robot is processed sequentially, i.e., finishes executing the robot instructions before the next robot begins execution.
 
-Each rover will be finished sequentially, which means that the second rover won’t start to move until the first one has finished moving.
+The maximum value for any coordinate is 50.
+
+All instruction strings will be less than 100 characters in length.
 
 **Output:**  
-The output for each rover should be its final co-ordinates and heading.
+For each robot position/instruction in the input, the output should indicate the final grid position and orientation of the robot. If a robot falls off the edge of the grid the word “LOST” should be printed after the position and orientation.
 
 **Input and Output:**
 
-*Test Input:*
+*Sample Input:*
 
-5 5  
-1 2 N  
-LMLMLMLMM
+```
+5 3
+1 1 E
+RFRFRFRF
 
-3 3 E  
-MMRMMRMRRM
+3 2 N
+FRRFLLFFRRFLL
+
+0 3 W
+LLFFFLFLFL
+```
 
 *Expected Output:*
 
-1 3 N
+```
+1 1 E
 
-5 1 E
+3 3 N LOST
+
+2 3 S
+```
