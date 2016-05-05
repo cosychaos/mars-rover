@@ -1,7 +1,0 @@
-INPUT
-
-read file
-split each line
-send array[0] to grid dimensions
-delete array[0]
-if empty string, strings at index +1 and +2 are sent to robot_data array
