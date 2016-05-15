@@ -25,14 +25,14 @@ describe MissionControl do
     end
 
     it 'instantiate a robot for each robot dataset available' do
-      @mission_control.create_robot
+      @mission_control.create_robots
       expect(@mission_control.deployed_robots.count).to be(3)
     end
   end
 
   xcontext '#moves robots' do
     it 'moves a series of robots' do
-      @mission_control.create_robot
+      @mission_control.create_robots
       @mission_control.move_robots
       expect(@mission_control.deployed_robots[0].final_position).to eq([1,1,'E'])
     end

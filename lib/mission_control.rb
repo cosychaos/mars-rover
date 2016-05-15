@@ -21,7 +21,7 @@ class MissionControl
     @grid = Grid.new(grid_coord = @grid_dataset)
   end
 
-  def create_robot
+  def create_robots
     @deployed_robots = []
     create_grid
     grid = @grid
@@ -30,13 +30,17 @@ class MissionControl
     end
   end
 
+
   def move_robots
-    @robot_scents = []
+    create_robot
     @deployed_robots.each do |robot|
-      robot.move_robot
-      # if robot.lost?
-      #   @robot_scents << robot.final_position
-      # end
+      x, y, orientation, lost = robot.move_robot
+      if lost
+        @grid.set_scent(x, y, orientation)
+        print "#{x} #{y} #{orientation} LOST\n"
+      else
+        print "#{x} #{y} #{orientation}\n"
+      end
     end
   end
 

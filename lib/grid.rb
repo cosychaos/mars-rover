@@ -8,14 +8,16 @@ class Grid
     @scent = []
   end
 
-  def is_scented?(x,y, orientation)
-    scent_location = ""
-    scent_location << x.to_s + "," + y.to_s + "," + orientation
-    @scent.include?(scent_location)
+  def set_scent(x,y, orientation)
+    @scent << coordinates(x,y, orientation)
   end
 
-  def set_scent(x,y, orientation)
-    @scent << x.to_s + "," + y.to_s + "," + orientation
+  def is_scented?(x,y, orientation)
+    @scent.include? coordinates(x,y, orientation)
+  end
+
+  def coordinates(x,y, orientation)
+    x.to_s + "," + y.to_s + "," + orientation
   end
 
 end
