@@ -6,7 +6,7 @@ class Input
     @contents = File.open('./input.txt', 'rb') { |file| file.read }
   end
 
-    def split_contents
+  def split_contents
     @parsed_input = @contents.split("\n")
   end
 
@@ -44,9 +44,41 @@ class Input
     end
   end
 
+  def check_coords
+    input = @robots_data
+    input.each do |dataset|
+      dataset[0].split(" ")
+      x_axis = dataset[0][0]
+      y_axis = dataset[0][2]
+
+      p x_axis = x_axis.to_i if x_axis.match(/\d/)
+      p y_axis = y_axis.to_i if y_axis.match(/\d/)
+
+      orientation = dataset[0][4]
+        if !x_axis.is_a?(Integer) || !y_axis.is_a?(Integer)
+          return "The robot's axis must be an integer"
+        elsif orientation != "N" && orientation != "S" && orientation != "E" && orientation != "W"
+          return "The robots orientation must be N, S, E or W"
+        end
+    end
+
+  end
+
   def fetch_all_data
+    # self.check_input
     self.format_grid_data
     self.format_robot_data
   end
 
 end
+
+# 2 integers (max 50) and NSEW (all separated by whitespace)
+# - if more than 50, raise error
+# - if no space, raise error (use regex?)
+# - if not NSEW, raise error
+# - if doesn't start with number, not correct
+#
+# LRF (max 100 chars)
+# - if more than 100 chars, raise error
+# - if not LRF, raise error
+# - if includes numbers, not correct

@@ -4,7 +4,7 @@ require_relative "grid"
 
 class MissionControl
 
-  attr_accessor :input, :robot_datasets, :robot, :grid_dataset, :grid, :deployed_robots, :robot_scents
+  attr_accessor :input, :robot_datasets, :grid_dataset, :grid, :deployed_robots
 
   def initialize(input = Input.new)
     @input = input
@@ -30,9 +30,8 @@ class MissionControl
     end
   end
 
-
   def move_robots
-    create_robot
+    create_robots
     @deployed_robots.each do |robot|
       x, y, orientation, lost = robot.move_robot
       if lost

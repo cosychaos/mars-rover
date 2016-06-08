@@ -30,11 +30,15 @@ describe MissionControl do
     end
   end
 
-  xcontext '#moves robots' do
+  context '#moves robots' do
     it 'moves a series of robots' do
-      @mission_control.create_robots
       @mission_control.move_robots
-      expect(@mission_control.deployed_robots[0].final_position).to eq([1,1,'E'])
+      expect(@mission_control.deployed_robots[0].x).to eq(1)
+      expect(@mission_control.deployed_robots[0].y).to eq(1)
+      expect(@mission_control.deployed_robots[0].orientation).to eq("E")
+      expect(@mission_control.deployed_robots[2].x).to eq(2)
+      expect(@mission_control.deployed_robots[2].y).to eq(3)
+      expect(@mission_control.deployed_robots[2].orientation).to eq("S")
     end
   end
 

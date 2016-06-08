@@ -6,7 +6,7 @@ describe Grid do
     @grid = Grid.new([5,3])
   end
 
-  it 'initialises a grid of 5 by 5' do
+  it 'initialises a grid of 5 by 3' do
     expect(@grid.x).to eq(5)
     expect(@grid.y).to eq(3)
   end
