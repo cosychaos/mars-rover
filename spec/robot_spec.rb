@@ -2,8 +2,13 @@ require "robot"
 require "grid"
 
 describe Robot do
+  let(:grid) {double :grid}
 
-  let(:grid) {Grid.new([5, 3])}
+  before do
+    allow(grid).to receive(:x).and_return(5)
+    allow(grid).to receive(:y).and_return(3)
+    allow(grid).to receive(:is_scented?)
+  end
 
   it 'is initialised with a 0, 0, N position and a command string' do
     robot = Robot.new([0, 0, "N", "RFRFRFRF"], grid)
@@ -107,17 +112,11 @@ describe Robot do
   context '#scents' do
     before(:each) do
       @robot = Robot.new([0, 3, "W", "LLFFFLFLFL"], grid)
+      allow(grid).to receive(:is_scented?)
     end
 
-    it 'returns true if the grid is scented where the robot is' do
-      expect(grid).to receive(:is_scented?).with(3, 3, "N").and_return(true)
-      expect(grid.is_scented?(3, 3, "N")).to be true
-    end
-
-    xit 'ignores the F command if is_lost is true' do
-      expect(grid).to receive(:is_scented?).with(3, 3, "N").and_return(true)
-      # expect(grid).to receive(:is_scented?).with(1, 1, "E").and_return(false)
-      expect(grid.is_scented?(3, 3, "N")).to be true
+    it 'ignores the forward command if the grid is scented' do
+      allow(grid).to receive(:is_scented?).with(3, 3, "N").and_return(true)
       expect(@robot.move_robot).to eq ([2, 3, "S", false])
     end
   end
