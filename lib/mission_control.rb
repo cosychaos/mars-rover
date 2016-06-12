@@ -16,6 +16,10 @@ class MissionControl
     @grid_dataset = @input.grid_dataset
   end
 
+  def check_input
+    @input.check_input
+  end
+
   def create_grid
     fetch_datasets
     @grid = Grid.new(grid_coord = @grid_dataset)

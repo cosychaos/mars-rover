@@ -34,64 +34,43 @@ class Input
     extract_robots_data
     @robots_data.each do |dataset|
       split_dataset = dataset[0].split(" ")
-      robot_data << split_dataset[0].to_i << split_dataset[1].to_i << split_dataset[2] << dataset[1]
+
+      if !split_dataset[0].match(/\d+/)
+        return "The robot's axis must be an integer"
+      elsif split_dataset[0].to_i > MAX_VALUE
+        return "The axis cannot be bigger than 50"
+      elsif split_dataset[0].match(/\d+/) && split_dataset[0].to_i < MAX_VALUE
+        robot_data << split_dataset[0].to_i
+      end
+
+      if !split_dataset[1].match(/\d+/)
+        return "The robot's axis must be an integer"
+      elsif split_dataset[1].to_i > MAX_VALUE
+        return "The axis cannot be bigger than 50"
+      elsif split_dataset[1].match(/\d+/) && split_dataset[1].to_i < MAX_VALUE
+        robot_data << split_dataset[1].to_i
+      end
+
+      if split_dataset[2] != "N" && split_dataset[2] != "S" && split_dataset[2] != "E" && split_dataset[2] != "W"
+        return "The robot's orientation must be N, S, E or W"
+      else
+        robot_data << split_dataset[2]
+      end
+
+      if dataset[1].length < MAX_CHARS
+        dataset[1].each_char do |char|
+          if char != "R" && char != "L" && char != "F"
+            return "The commands can only be R, L or F"
+          end
+        end
+        robot_data << dataset[1]
+      elsif dataset[1].length > MAX_CHARS
+         return "Please do not enter more than 100 characters"
+      end
+
       @robot_datasets = robot_data.each_slice(4).to_a
     end
   end
-
-  def check_coords
-    @robots_data.each do |dataset|
-      dataset[0].split(" ")
-      x_axis = dataset[0][0]
-      y_axis = dataset[0][2]
-
-      x_axis = x_axis.to_i if x_axis.match(/\d/)
-      y_axis = y_axis.to_i if y_axis.match(/\d/)
-      orientation = dataset[0][4]
-
-        if !x_axis.is_a?(Integer) || !y_axis.is_a?(Integer)
-          return "The robot's axis must be an integer"
-        elsif orientation != "N" && orientation != "S" && orientation != "E" && orientation != "W"
-          return "The robot's orientation must be N, S, E or W"
-        end
-    end
-  end
-
-  def check_cmds
-    @robots_data.each do |dataset|
-      dataset[1].each_char do |char|
-        if char != "R" || char != "L" || char != "F"
-          return "The commands can only be R, L or F"
-        end
-      end
-    end
-  end
-
-  def check_value
-    @robots_data.each do |dataset|
-      dataset = dataset[0].split(" ")
-      x_axis = dataset[0].to_i if dataset[0].match(/\d+/)
-      y_axis = dataset[1].to_i if dataset[1].match(/\d+/)
-      if x_axis > MAX_VALUE || y_axis > MAX_VALUE
-        return "The axis cannot be bigger than 50"
-      end
-    end
-  end
-
-  def check_length
-    @robots_data.each do |dataset|
-      if dataset[1].length > MAX_CHARS
-        return "Please do not enter more than 100 commands"
-      end
-    end
-  end
-
-  # def check_input
-  #   check_coords
-  #   check_cmds
-  #   check_value
-  #   check_length
-  # end
 
   def fetch_all_data
     format_grid_data
